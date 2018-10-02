@@ -1,5 +1,6 @@
 var mysql = require('mysql');
-
+const cassandra = require('cassandra-driver');
+const client = new cassandra.Client({contactPoints: ['127.0.0.1:9042']});
 
 var connection = mysql.createConnection({
 	user: 'root', //CHANGE TO YOUR LOGIN USER AND PASSWORD
@@ -7,11 +8,24 @@ var connection = mysql.createConnection({
 	database: 'gallery'
 });
 
-var getImages = function(homeid, callback) {
-	connection.query(`SELECT image, caption FROM homeImages WHERE home_id=${homeid}`, (err, results) => {
-		if (err) throw err;
-		callback(null, results);
-	})
+var getImages = function(home_id, callback) {
+  client.execute(`SELECT * FROM demo.homes where home_id = ${home_id}`)
+  .then((result) => {
+    const images = result.rows[0].image;
+    const resultArray = [];
+    for(let image in images) {
+      resultArray.push({"image": image, "caption": images[image]});
+    }
+    callback(null, resultArray);
+  })
+  .catch((err) => {
+   // console.log('ERROR', err);
+  })
+	// connection.query(`SELECT image, caption FROM homeImages WHERE home_id=${home_id}`, (err, results) => {
+	// 	if (err) throw err;
+ //    // console.log(results);
+	// 	callback(null, results);
+	// })
 };
 
 const postImage = function(homeid, location, number, callback) {

@@ -20,7 +20,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			homeId: '100', //DEFAULTS TO HOME 100
+			homeId: this.props.homeId[4], //DEFAULTS TO HOME 100
 			imagesArr: [{image: null, caption: null, index: null}],
 			modalDisplay: false,
 			featureImgObj: {image: null, caption: null, index: null},
@@ -35,11 +35,10 @@ class App extends React.Component {
 		this.prevFeatureImg = this.prevFeatureImg.bind(this);
 		this.nextFeatureImg = this.nextFeatureImg.bind(this);
 		this.keyHandler = this.keyHandler.bind(this);
-
 	}
 
 	getHomeId () {
-		this.setState({homeId: this.props.homeId}, ()=> {
+		this.setState({homeId: this.props.homeId[4]}, ()=> {
 			this.getPics();
 		});
 	}

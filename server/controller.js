@@ -2,7 +2,7 @@ const db = require('../database/db-mysql');
 
 module.exports = {
   get: function(req, res) {
-    console.log('REQUEST RECEIVED', req.params.homeId)
+    // console.log('REQUEST RECEIVED', req.params.homeId)
     let callback = (err, data) => {
       res.send(data)
     };

@@ -7,7 +7,8 @@ var path = require ('path')
 
 const app = express();
 
-// app.use('/homes/:homeId', express.static(__dirname + '/../public'));
+// app.use(morgan);
+app.use('/homes/:homeId', express.static(__dirname + '/../public'));
 app.use(bodyparser('json'));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -16,15 +17,6 @@ app.use(function(req, res, next) {
 });
 
 app.use('/homes', routes);
-
-// app.get('/homes/:homeId/images', (req, res)=>{
-// 	console.log('REQUEST RECEIVED', req.params.homeId)
-// 	let callback = (err, data) => {
-// 		res.send(data)
-// 	};
-
-// 	db.getImages(req.params.homeId, callback)
-// });
 
 
 

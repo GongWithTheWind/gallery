@@ -19,27 +19,33 @@ var getImages = function(homeId, callback) {
     });
 };
 
-const postImage = function(homeId, location, number, callback) {
-  const newImage = `http://d17fsphohqa4x.cloudfront.net/homeimages/${location}/${location}${number}.jpg` 
-  const query = `INSERT INTO homeImages (home_id, image, caption) VALUES ("${homeId}", "${newImage}", "Lorem Ipsum")`
-  connection.query(query, ((err, result) => {
-    if(err) console.log(err)
-    console.log('successful post!!')
-    callback(result);
-  }))
-}
+const postImage = function(homeId, imageId, caption, callback) {
+  console.log('POST REQUEST MADE', homeId, imageId, caption);  
+  const newImage = `https://loremflickr.com/320/240?lock=${imageId}`;
+  const query = `INSERT INTO images (home_id, image, image_id, caption) VALUES ($1, $2, $3, $4) RETURNING *`;
+  const queryArgs = [homeId, newImage, imageId, caption];
+  console.time('timer');
+  client.query(query, queryArgs)
+    .then((result) => {
+      console.log(result);
+      callback(null, 200);
+      console.timeEnd('timer'); // -> 41ms to and fro after receiving the request. 
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-const deleteImage = function(homeId, location, number, callback) {
-  const query = `
-    DELETE FROM homeImages 
-    WHERE home_id = ${homeId} AND
-    (image LIKE '%${location}${number}%')
-  `
-  connection.query(query, ((err, result) => {
-    if (err) console.log(err)
-      console.log('successful deletion!!')
-      callback(result);
-  }))
+const deleteImage = function(homeId, imageId, callback) {
+  console.log('DELETE REQUEST MADE', homeId, imageId);
+  client.query(`DELETE FROM images where home_id = ${homeId} AND image_id = ${imageId}`)
+    .then((result) => {
+      console.log(result);
+      callback(null, 200);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 const updateImage = function(id, oldLoc, oldNum, newLoc, newNum, callback) {

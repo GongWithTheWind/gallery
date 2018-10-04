@@ -2,19 +2,17 @@ const db = require('../database/db-mysql');
 
 module.exports = {
   get: function(req, res) {
-    // console.log('REQUEST RECEIVED', req.params.homeId)
     let callback = (err, data) => {
-      res.send(data)
+      res.send(data);
     };
-    db.getImages(req.params.homeId, callback)  
+    db.getImages(req.params.homeId, callback);
   },
   post: function(req, res) {
     db.postImage(
       req.params.homeId,
-      req.body.location, 
-      req.body.number, 
-      res.send.bind(res))
-    // db.postImage(  , res.send.bind())
+      req.body.imageId, 
+      req.body.caption, 
+      res.send.bind(res));
   },
   patch: function(req, res) {
     db.updateImage(
@@ -28,9 +26,8 @@ module.exports = {
   delete: function(req, res) {
     db.deleteImage(
       req.params.homeId,
-      req.body.location,
-      req.body.number,
+      req.body.imageId,
       res.send.bind(res)
-    )
+    );
   }
-}
+};

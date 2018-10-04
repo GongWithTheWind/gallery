@@ -41,7 +41,8 @@
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "jest": "^23.5.0",
     "jest-cli": "^23.5.0",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "pg": "^7.5.0"
   },
   "jest": {
     "snapshotSerializers": [

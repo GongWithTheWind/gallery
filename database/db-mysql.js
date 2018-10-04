@@ -1,36 +1,27 @@
 var mysql = require('mysql');
-const cassandra = require('cassandra-driver');
-const client = new cassandra.Client({contactPoints: ['127.0.0.1:9042']});
-
-var connection = mysql.createConnection({
-	user: 'root', //CHANGE TO YOUR LOGIN USER AND PASSWORD
-	password: null,
-	database: 'gallery'
+const { Client } = require('pg');
+const client = new Client({
+  host: 'localhost',
+  database: 'treypurnell',
 });
 
-var getImages = function(home_id, callback) {
-  client.execute(`SELECT * FROM demo.homes where home_id = ${home_id}`)
-  .then((result) => {
-    const images = result.rows[0].image;
-    const resultArray = [];
-    for(let image in images) {
-      resultArray.push({"image": image, "caption": images[image]});
-    }
-    callback(null, resultArray);
-  })
-  .catch((err) => {
-   // console.log('ERROR', err);
-  })
-	// connection.query(`SELECT image, caption FROM homeImages WHERE home_id=${home_id}`, (err, results) => {
-	// 	if (err) throw err;
- //    // console.log(results);
-	// 	callback(null, results);
-	// })
+client.connect();
+
+var getImages = function(homeId, callback) {
+  console.log('GET REQUEST MADE', homeId, callback);
+  client.query(`SELECT image, caption from images where home_id = ${homeId}`)
+    .then((result) => {
+      console.log(result.rows);
+      callback(null, result.rows);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
-const postImage = function(homeid, location, number, callback) {
+const postImage = function(homeId, location, number, callback) {
   const newImage = `http://d17fsphohqa4x.cloudfront.net/homeimages/${location}/${location}${number}.jpg` 
-  const query = `INSERT INTO homeImages (home_id, image, caption) VALUES ("${homeid}", "${newImage}", "Lorem Ipsum")`
+  const query = `INSERT INTO homeImages (home_id, image, caption) VALUES ("${homeId}", "${newImage}", "Lorem Ipsum")`
   connection.query(query, ((err, result) => {
     if(err) console.log(err)
     console.log('successful post!!')
@@ -45,7 +36,7 @@ const deleteImage = function(homeId, location, number, callback) {
     (image LIKE '%${location}${number}%')
   `
   connection.query(query, ((err, result) => {
-    if(err) console.log(err)
+    if (err) console.log(err)
       console.log('successful deletion!!')
       callback(result);
   }))
@@ -56,28 +47,27 @@ const updateImage = function(id, oldLoc, oldNum, newLoc, newNum, callback) {
   const query = `
   UPDATE homeImages set image = '${newImage}'
   WHERE home_id = '${id}' AND 
-  (image LIKE '%${oldLoc}${oldNum}%')
-  `
+  (image LIKE '%${oldLoc}${oldNum}%')`;
 
   console.log(id, oldNum, oldLoc, newNum, newLoc);
 
   connection.query(query, ((err, result) => {
-    if(err) console.log(err);
+    if (err) console.log(err);
     console.log(result);
-    console.log('successful update!!')
+    console.log('successful update!!');
     callback(result);
-  }))
+  }));
 
   console.log('updateImage');
-}
+};
  
 
- // {"oldLocation": "joshua","oldNumber": "23","newLocation": "japan!","newNumber": "13"}
+// {"oldLocation": "joshua","oldNumber": "23","newLocation": "japan!","newNumber": "13"}
 
 module.exports = {
   getImages,
   postImage,
   deleteImage,
   updateImage,
-}
+};
 

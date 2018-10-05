@@ -17,10 +17,8 @@ module.exports = {
   patch: function(req, res) {
     db.updateImage(
       req.params.homeId,
-      req.body.oldLocation, 
-      req.body.oldNumber, 
-      req.body.newLocation, 
-      req.body.newNumber,      
+      req.body.imageId, 
+      req.body.caption,      
       res.send.bind(res));
   },
   delete: function(req, res) {

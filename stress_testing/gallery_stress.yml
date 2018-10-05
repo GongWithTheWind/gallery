@@ -1,0 +1,18 @@
+config:
+  target: 'http://localhost:3003'
+  phases:
+    - duration: 300
+      arrivalRate: 5
+  payload:
+    path: 'rows.csv'
+    fields:
+      - "home_id"
+      - "image_id"
+      - "caption"
+scenarios:
+  - name: "Simple Get"
+    flow:
+      - loop:
+          - get:
+              url: "/homes/{{ home_id }}/images"
+        count: 500

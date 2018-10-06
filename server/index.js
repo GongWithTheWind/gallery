@@ -1,7 +1,7 @@
 const nr = require('newrelic');
 const express = require('express');
 const db = require('../database/db-mysql');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const routes = require('./routes.js');
 const bodyparser = require('body-parser');
 const cors = require('cors');

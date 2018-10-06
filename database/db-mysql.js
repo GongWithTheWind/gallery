@@ -20,7 +20,8 @@ var getImages = function(homeId, callback) {
 };
 
 const postImage = function(homeId, imageId, caption, callback) {
-  // console.log('POST REQUEST MADE', homeId, imageId, caption);  
+  // console.log('POST REQUEST MADE', homeId, imageId, caption);
+  const newImage = `https://loremflickr.com/320/240?lock=${imageId}`
   const query = `INSERT INTO images (home_id, image, image_id, caption) VALUES ($1, $2, $3, $4) RETURNING *`;
   const queryArgs = [homeId, newImage, imageId, caption];
   // console.time('timer');

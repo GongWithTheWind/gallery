@@ -1,11 +1,25 @@
 const db = require('../database/db-mysql');
+const redis = require('redis');
+const redisClient = redis.createClient(6379);
+
 
 module.exports = {
   get: function(req, res) {
     let callback = (err, data) => {
       res.send(data);
+      redisClient.setex(req.params.homeId.toString(), 6000, JSON.stringify(data));
     };
-    db.getImages(req.params.homeId, callback);
+
+    redisClient.get(req.params.homeId.toString(), function(err, response) {
+      if(err) console.log(err)
+        console.log(response);
+      if (response != null) {
+        res.send(JSON.parse(response));
+      } else {
+        db.getImages(req.params.homeId, callback.bind(this));
+      }
+    })
+
   },
   post: function(req, res) {
     db.postImage(

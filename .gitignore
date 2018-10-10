@@ -6,6 +6,10 @@ npm
 npm-debug.log
 node_modules/
 
+newrelic.js
+
+stress_testing/rows.csv
+
 pids
 *.pid
 logs

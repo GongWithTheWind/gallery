@@ -1,29 +1,26 @@
+const nr = require('newrelic');
 const express = require('express');
 const db = require('../database/db-mysql');
-var path = require ('path')
+const morgan = require('morgan');
+const routes = require('./routes.js');
+const bodyparser = require('body-parser');
+const cors = require('cors');
+
+const port = process.env.PORT || 3003;
 
 const app = express();
+// app.use(cors());
+// app.use(morgan());
 app.use('/homes/:homeId', express.static(__dirname + '/../public'));
-
+app.use(bodyparser('json'));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
-app.get('/homes/:homeId/images', (req, res)=>{
-		console.log('REQUEST RECEIVED', req.params.homeId)
-	let callback = (err, data) => {
-		// let imageArr = data.map((obj)=>{
-		// 	return [obj.image, obj.caption]
-		// })
-		res.send(data)
-	};
-
-	db.getImages(req.params.homeId, callback)
-
-});
+app.use('/homes', routes);
 
 
 
-app.listen(3003, () => console.log('listing on port 3003...'))
+app.listen(port, () => console.log(`listing on port ${port}`))

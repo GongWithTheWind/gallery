@@ -11,8 +11,9 @@
 ## Table of Contents
 
 1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+2. [Requirements](#requirements)
+3. [Development](#development)
+4. [CRUD API](#crudAPI)
 
 ## Usage
 
@@ -37,3 +38,29 @@ From within the root directory:
 -Run npm start
 ```
 
+### CRUD API
+
+GET homes/:homeId/images
+
+POST homes/:homeId/images 
+
+data: {
+  location,
+  number
+}
+
+PATCH homes/:homeId/images
+
+data: {
+  oldLocation,
+  oldNumber,
+  newLocation,
+  newNumber
+}
+
+DELETE homes/:homeId/images
+
+data: {
+  location,
+  number
+}

@@ -20,7 +20,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			homeId: '100', //DEFAULTS TO HOME 100
+			homeId: '9999999', //DEFAULTS TO HOME 100
 			imagesArr: [{image: null, caption: null, index: null}],
 			modalDisplay: false,
 			featureImgObj: {image: null, caption: null, index: null},
@@ -127,4 +127,3 @@ class App extends React.Component {
 }
 
 export default App
-

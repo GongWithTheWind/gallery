@@ -7,19 +7,19 @@ module.exports = {
   get: function(req, res) {
     let callback = (err, data) => {
       res.send(data);
-      redisClient.setex(req.params.homeId.toString(), 360, JSON.stringify(data));
+      // redisClient.setex(req.params.homeId.toString(), 360, JSON.stringify(data));
     };
 
-    redisClient.get(req.params.homeId.toString(), function(err, response) {
-      if(err) console.log(err)
-      if (response != null) {
-        res.send(JSON.parse(response));
-      } else {
-        db.getImages(req.params.homeId, callback.bind(this));
-      }
-    })
+    // redisClient.get(req.params.homeId.toString(), function(err, response) {
+    //   if(err) console.log(err)
+    //   if (response != null) {
+    //     res.send(JSON.parse(response));
+    //   } else {
+    //     db.getImages(req.params.homeId, callback.bind(this));
+    //   }
+    // })
   
-    // db.getImages(req.params.homeId, callback.bind(this));
+    db.getImages(req.params.homeId, callback.bind(this));
   },
   post: function(req, res) {
     db.postImage(

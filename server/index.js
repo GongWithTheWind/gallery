@@ -5,10 +5,9 @@ const morgan = require('morgan');
 const routes = require('./routes.js');
 const bodyparser = require('body-parser');
 const cors = require('cors');
-var path = require ('path')
 
 const app = express();
-app.use(cors());
+// app.use(cors());
 // app.use(morgan());
 app.use('/homes/:homeId', express.static(__dirname + '/../public'));
 app.use(bodyparser('json'));

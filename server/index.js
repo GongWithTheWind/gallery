@@ -6,6 +6,8 @@ const routes = require('./routes.js');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 
+const port = process.env.PORT || 3003;
+
 const app = express();
 // app.use(cors());
 // app.use(morgan());
@@ -21,4 +23,4 @@ app.use('/homes', routes);
 
 
 
-app.listen(3003, () => console.log('listing on port 3003...'))
+app.listen(port, () => console.log(`listing on port ${port}`))
